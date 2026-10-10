@@ -1,0 +1,35 @@
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Employee {
+  id        String   @id @default(uuid())
+  name      String
+  pin       String   @unique
+  role      String   // Server, Kitchen, Bar, Manager
+  isActive  Boolean  @default(true)
+  shifts    Shift[]
+  createdAt DateTime @default(now())
+}
+
+model Shift {
+  id         String    @id @default(uuid())
+  employeeId String
+  employee   Employee  @relation(fields: [employeeId], references: [id])
+  clockIn    DateTime  @default(now())
+  clockOut   DateTime?
+  breaks     Break[]
+}
+
+model Break {
+  id        String    @id @default(uuid())
+  shiftId   String
+  shift     Shift     @relation(fields: [shiftId], references: [id])
+  startTime DateTime  @default(now())
+  endTime   DateTime?
+}
