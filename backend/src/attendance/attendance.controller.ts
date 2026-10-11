@@ -2,6 +2,7 @@ import { Controller, Post, Get, Body } from '@nestjs/common';
 import { AttendanceService } from './attendance.service';
 import { CreateAttendanceDto } from './dto/create-attendance.dto';
 import { BreakAttendanceDto } from './dto/break-attendance.dto';
+import { RegisterEmployeeDto } from './dto/register-employee.dto';
 
 @Controller('attendance')
 export class AttendanceController {
