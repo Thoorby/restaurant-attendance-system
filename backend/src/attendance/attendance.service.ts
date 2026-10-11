@@ -11,6 +11,25 @@ import { BreakAttendanceDto } from './dto/break-attendance.dto';
 export class AttendanceService {
   constructor(private readonly prisma: PrismaService) {}
 
+// 1. ADD THIS NEW REGISTRATION METHOD
+  async registerEmployee(dto: { name: string; role: string; pin: string }) {
+    const existing = await this.prisma.employee.findUnique({
+      where: { pin: dto.pin },
+    });
+
+    if (existing) {
+      throw new BadRequestException('This 4-digit PIN is already assigned to another employee.');
+    }
+
+    return this.prisma.employee.create({
+      data: {
+        name: dto.name,
+        role: dto.role,
+        pin: dto.pin,
+      },
+    });
+  }
+
   private async validateEmployee(pin: string) {
     const employee = await this.prisma.employee.findUnique({
       where: { pin },

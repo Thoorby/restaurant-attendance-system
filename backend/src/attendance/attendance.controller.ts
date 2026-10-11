@@ -7,6 +7,11 @@ import { BreakAttendanceDto } from './dto/break-attendance.dto';
 export class AttendanceController {
   constructor(private readonly attendanceService: AttendanceService) {}
 
+  @Post('register')
+  async register(@Body() dto: RegisterEmployeeDto) {
+    return this.attendanceService.registerEmployee(dto);
+  }
+
   @Post('clock-in')
   clockIn(@Body() dto: CreateAttendanceDto) {
     return this.attendanceService.clockIn(dto);
